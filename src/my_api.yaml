@@ -1,0 +1,299 @@
+swagger: "2.0"
+info:
+  description: This is the swagger file that goes with our server code
+  version: "1.0.0"
+  title: REST Parking application
+consumes:
+  - application/json
+produces:
+  - application/json
+
+basePath: /api
+
+# Paths supported by the server application
+paths:
+  /drivers/driver:
+    get:
+      operationId: drivers.read_all
+      tags:
+        - Drivers
+      summary: Read the entire list of drivers
+      description: Read the list of drivers
+      parameters:
+        - name: created_at__gte
+          in: query
+          type: string
+          description: Drivers created after date
+          required: false
+        - name: created_at__lte
+          in: query
+          type: string
+          description: Drivers created before date
+          required: false
+      responses:
+        200:
+          description: Successfully read drivers list operation
+          schema:
+            type: array
+            items:
+              properties:
+                driver_id:
+                  type: integer
+                first_name:
+                  type: string
+                last_name:
+                  type: string
+                created_at:
+                  type: string
+                updated_at:
+                  type: string
+    post:
+      operationId: drivers.create
+      tags:
+        - Drivers
+      summary: Create a driver and add it to the drivers list
+      description: Create a new driver in the drivers list
+      parameters:
+        - name: driver
+          in: body
+          description: Driver to create
+          required: True
+          schema:
+            type: object
+            properties:
+              first_name:
+                type: string
+                description: First name of driver to create
+              last_name:
+                type: string
+                description: Last name of driver to create
+      responses:
+        201:
+          description: Successfully created driver in list
+
+  /drivers/driver/{driver_id}:
+    get:
+      operationId: drivers.read_one
+      tags:
+        - Drivers
+      summary: Read one driver from the drivers list
+      description: Read one driver from the drivers list
+      parameters:
+        - name: driver_id
+          in: path
+          description: Id of the driver to get from the list
+          type: integer
+          required: True
+      responses:
+        200:
+          description: Successfully read driver from drivers list operation
+          schema:
+            properties:
+              first_name:
+                type: string
+              last_name:
+                type: string
+              created_at:
+                type: string
+              updated_at:
+                type: string
+    put:
+      operationId: drivers.update
+      tags:
+        - Drivers
+      summary: Update a driver in the drivers list
+      description: Update a driver in the drivers list
+      parameters:
+        - name: driver_id
+          in: path
+          description: Id of the driver to update in the list
+          type: integer
+          required: True
+        - name: driver
+          in: body
+          schema:
+            type: object
+            properties:
+              first_name:
+                type: string
+              last_name:
+                type: string
+      responses:
+        200:
+          description: Successfully updated driver in drivers list
+    delete:
+      operationId: drivers.delete
+      tags:
+        - Drivers
+      summary: Delete a driver from the drivers list
+      description: Delete a driver
+      parameters:
+        - name: driver_id
+          in: path
+          type: integer
+          required: True
+      responses:
+        200:
+          description: Successfully deleted a driver from drivers list
+
+  /vehicles/vehicle:
+    get:
+      operationId: vehicle.read_all
+      tags:
+        - Vehicles
+      summary: Read the entire set of vehicles for all drivers
+      description: Read the entire set of vehicles for all drivers
+      parameters:
+        - name: with_drivers
+          in: query
+          type: string
+          description: Vehicles with/without drivers
+          required: false
+      responses:
+        200:
+          description: Successfully read vehicles
+          schema:
+            type: array
+            items:
+              properties:
+                vehicle_id:
+                  type: integer
+                  description: Id of the vehicle
+                make:
+                  type: string
+                  description: don't know
+                model:
+                  type: string
+                  description: Model of the vehicle
+                plate_number:
+                  type: string
+                  description: Plate number of the vehicle
+                created_at:
+                  type: string
+                  description: Update timestamp of the vehicle
+                updated_at:
+                  type: string
+                  description: Update timestamp of the vehicle
+    post:
+      operationId: vehicle.create
+      tags:
+        - Vehicles
+      summary: Create a vehicle and add it to the vehicles list
+      description: Create a new vehicle in the vehicles list
+      parameters:
+        - name: vehicle
+          in: body
+          description: Vehicle to create
+          required: True
+          schema:
+            type: object
+            properties:
+              make:
+                type: string
+                description: Don't know
+              model:
+                type: string
+                description: model of vehicle to create
+              plate_number:
+                type: string
+                description: Plate number of vehicle to create
+      responses:
+        201:
+          description: Successfully created vehicle in list
+
+  /vehicles/vehicle/{vehicle_id}:
+    get:
+      operationId: vehicle.read_one
+      tags:
+        - Vehicles
+      summary: Read one vehicle from the vehicles list
+      description: Read one vehicle from the vehicles list
+      parameters:
+        - name: vehicle_id
+          in: path
+          description: Id of the vehicle to get from the list
+          type: integer
+          required: True
+      responses:
+        200:
+          description: Successfully read vehicle from vehicles list operation
+          schema:
+            properties:
+              driver_id:
+                type: integer
+              make:
+                type: string
+              model:
+                type: string
+              plate_number:
+                type: string
+              created_at:
+                type: string
+              updated_at:
+                type: string
+
+    put:
+      operationId: vehicle.update
+      tags:
+        - Vehicles
+      summary: Update a vehicle in the vehicles list
+      description: Update a vehicle in the vehicles list
+      parameters:
+        - name: vehicle_id
+          in: path
+          description: Id of the vehicle to update in the list
+          type: integer
+          required: True
+        - name: vehicle
+          in: body
+          schema:
+            type: object
+            properties:
+              make:
+                type: string
+              model:
+                type: string
+              plate_number:
+                type: string
+      responses:
+        200:
+          description: Successfully updated vehicle in vehicles list
+
+    delete:
+      operationId: vehicle.delete
+      tags:
+        - Vehicles
+      summary: Delete a vehicle from the vehicles list
+      description: Delete a vehicle
+      parameters:
+        - name: vehicle_id
+          in: path
+          type: integer
+          required: True
+      responses:
+        200:
+          description: Successfully deleted a vehicle from vehicles list
+
+  /vehicles/set_driver/{vehicle_id}:
+    post:
+      operationId: vehicle.set_driver
+      tags:
+        - Vehicles
+      summary: Update a vehicle in the vehicles list
+      description: Update a vehicle in the vehicles list
+      parameters:
+        - name: vehicle_id
+          in: path
+          description: Id of the vehicle to update in the list
+          type: integer
+          required: True
+        - name: driver
+          in: body
+          schema:
+            type: object
+            properties:
+              driver_id:
+                type: integer
+      responses:
+        200:
+          description: Successfully updated vehicle in vehicles list
