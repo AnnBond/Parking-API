@@ -3,7 +3,7 @@
 
 Basic API project with Flask
 ```
-https://github.com/AnnBond/ParkingAPI
+https://github.com/AnnBond/Parking-API
 ```
 ## Requirements
 
